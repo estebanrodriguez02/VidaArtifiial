@@ -1,6 +1,5 @@
 import turtle
 
-# Función para generar una cadena aplicando reglas de producción
 def generate_string(axiom, production_rules, iterations):
     result = axiom
 
@@ -9,7 +8,6 @@ def generate_string(axiom, production_rules, iterations):
 
     return result
 
-# Función para interpretar una cadena y visualizarla con Turtle
 def interpret_string(input_string, angle, size):
     turtle.speed(0)
     stack = []
@@ -21,18 +19,26 @@ def interpret_string(input_string, angle, size):
             turtle.left(angle)
         elif char == '+':
             turtle.right(angle)
+        elif char == '[':
+            stack.append((turtle.position(), turtle.heading()))
+        elif char == ']':
+            position, heading = stack.pop()
+            turtle.penup()
+            turtle.goto(position)
+            turtle.setheading(heading)
+            turtle.pendown()
 
-# Configuración inicial de Turtle
 if __name__ == "__main__":
-    axiom = 'F-F-F-F'
-    production_rules = {'F': 'F-F+F+FF-F-F+F'}
+    axiom = 'FX'
+    production_rules = {'X': 'X+YF', 'Y': 'FX-Y'}
     iterations = 10
     result = generate_string(axiom, production_rules, iterations)
 
+    turtle.speed(0) 
     turtle.penup()
     turtle.goto(-200, 0)
     turtle.pendown()
 
-    interpret_string(result, 90, 8)  # Ángulo de 90 grados
+    interpret_string(result, 90, 10)
 
     turtle.done()
